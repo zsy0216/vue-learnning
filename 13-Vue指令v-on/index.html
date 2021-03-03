@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>13-Vue指令v-on</title>
+    <script src="js/vue.js"></script>
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+      }
+      .a {
+          width: 300px;
+          height: 300px;
+          background: red;
+      }
+      .b {
+          width: 200px;
+          height: 200px;
+          background: blue;
+      }
+      .c {
+          width: 100px;
+          height: 100px;
+          background: green;
+      }
+    </style>
+</head>
+<body>
+<div id="app">
+    <button v-on:click="click">Button</button>
+    <button @click="click">Button2</button>
+
+    <button @click.once="click">事件修饰符 .once</button>
+    <a href="https://github.com/zsy0216" @click.prevent="click">事件修饰符 .prevent</a>
+
+    <!-- 默认情况下，嵌套的元素中如果都监听了相同的事件，那么会触发事件冒泡 -->
+    <div class="a" @click="fn1">
+      <div class="b" @click="fn2">
+        <div class="c" @click.stop="fn3">事件修饰符 .stop</div>
+      </div>
+    </div>
+
+    <!-- .self 只有当前元素的事件被触发时才会执行 -->
+    <div class="a" @click="fn1">
+      <div class="b" @click.self="fn2">
+        <div class="c" @click="fn3">事件修饰符 .self</div>
+      </div>
+    </div>
+
+    <!-- 默认情况下是事件冒泡，.capture可以转换成事件捕获 -->
+    <div class="a" @click.capture="fn1">
+      <div class="b" @click.capture="fn2">
+        <div class="c" @click.capture="fn3">事件修饰符 .capture</div>
+      </div>
+    </div>
+
+    按键修饰符：<input type="text" @keyup="handleKeyUp()" size="124%" value="其他特殊按键修饰符参考：https://cn.vuejs.org/v2/guide/events.html#%E6%8C%89%E9%94%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6"/>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 VM */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+        },
+        methods: {
+            click() {
+                alert("button clicked")
+            },
+            fn1() {
+                alert("红色")
+            },
+            fn2() {
+                alert("蓝色")
+            },
+            fn3() {
+                alert("绿色")
+            },
+            handleKeyUp(){
+                alert("按下了键盘")
+            }
+        }
+    })
+</script>
+</html>
+<!--
+1. v-on 指令
+v-on 指令专门用于给元素绑定监听事件
+
+2. v-on 指令格式
+- v-on:事件名称="回调函数名称"
+- @事件名称="回调函数名称"
+
+3. v-on 注意点：
+v-on 绑定的时间被触发之后，会去 Vue 实例对象的 methods 中查找对应的回调函数
+
+4. v-on 修饰符
+在事件中有很多东西需要我们处理，例如事件冒泡、事件捕获、阻止默认行为等
+那么在Vue中如何处理这些内容呢？我们可以通过v-on修饰符来处理
+
+5. 常见修饰符
+.once    - 只触发一次回调
+.prevent - 调用 event.preventDefault() 阻止默认行为
+.stop    - 调用 event.stopPropagation() 阻止事件冒泡
+.self    - 只当事件是从侦听器绑定的元素本身触发时才触发回调
+.capture - 添加事件侦听器时使用 capture 模式
+
+6. v-on 使用注意事项
+- 绑定回调函数名称的时候，后面可以加() 也可以不加
+@click="function"
+@click="function()"
+
+- 可以给绑定的回调函数传递参数
+@click="function('name', 'zsy')"
+- 也可以传递原生事件对象
+@click="function('name', 'zsy', $event)"
+
+- 如果在绑定的函数中需要用到data中的数据必须加上this
+
+7. 按键修饰符
+我们可以通过按键修饰符监听特定按键触发的事件
+例如：可以监听当前事件是否是回车触发的，可以监听当前事件是否是ESC键触发的
+
+8. 按键修饰符分类
+参考：https://cn.vuejs.org/v2/guide/events.html#%E6%8C%89%E9%94%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6
+- 系统预定义修饰符
+- 自定义修饰符
+
+-->
