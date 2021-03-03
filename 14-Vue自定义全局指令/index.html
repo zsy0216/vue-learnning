@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>14-Vue自定义全局指令</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- 自定义指令 v-red 使字体变为红色 -->
+    <p v-red>这是段落</p>
+
+    <!-- 自定义指令 v-color 传参 -->
+    <p v-color="color">这是段落传递颜色参数</p>
+
+    <!-- 自定义指令 v-focus 渲染之后被选中有光标 -->
+    <input type="text" v-focus/>
+</div>
+</body>
+<script>
+    /* 自定义指令 v-red */
+    Vue.directive('red', {
+      // el: 被绑定指令的元素
+      bind: function (el) {
+        el.style.color = 'red'
+      }
+    })
+
+    /* 自定义指令 v-color */
+    Vue.directive('color', {
+      // el: 被绑定指令的元素
+      bind: function (el, binding) {
+        el.style.color = binding.value
+      }
+    })
+
+    Vue.directive('focus', {
+      // el: 被绑定指令的元素
+      inserted: function (el) {
+        el.focus()
+      }
+    })
+
+    /* 1. 创建 vue 实例对象 VM */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+          color: 'blue'
+        },
+        methods: {
+
+        }
+    })
+</script>
+</html>
+<!--
+1. 自定义全局指令
+在Vue中除了可以使用Vue内置的一些指令以外，我们还可以自定义指令
+https://cn.vuejs.org/v2/guide/custom-directive.html
+
+2. 自定义全局指令语法
+Vue.directive('自定义指令名称', {
+  声明周期名称: function (el) {
+    指令业务逻辑代码
+  }
+})
+
+3. 指令声明周期方法
+自定义指令时一定要明确指令的业务逻辑代码更适合在哪个阶段执行
+例如：指令业务逻辑代码中没有用到元素事件，那么可以在bind阶段执行
+例如：指令业务逻辑代码中用到了元素事件，那么就需要在inserted阶段执行
+
+4. 自定义指令注意点
+使用时需要加上 v-，而自定义时不需要
+
+- 指令可以在不同的生命周期阶段执行
+bind: 指令被绑定到元素上的时候执行
+inserted: 绑定指令的元素被添加到父元素上的时候调用
+
+5. 自定义指令参数
+在使用官方指令的时候我们可以给指令传参
+例如: v-model="name"
+在我们自定义的指令中我们也可以传递参数
+
+6. 获取自定义指令传递的参数
+在执行自定义指令对应的方法的时候，除了会传递el给我们，
+还会传递一个对象，这个对象中就保存了指令传递过来的参数。
+
+-->
