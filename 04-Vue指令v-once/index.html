@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>04-Vue指令v-once</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1 v-once>原始数据：{{name}}</h1>
+  <h1>当前数据：{{name}}</h1>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+          name: 'zsy'
+        }
+    })
+</script>
+</html>
+<!--
+1. 什么是指令？
+指令就是Vue内部提供的一些自定义属性；
+这些属性中封装好了Vue内部实现的一些功能；
+只要使用这些指令就可以使用Vue中实现的这些功能；
+
+2. Vue数据绑定的特点
+只要数据发生变化，界面就会跟着变化；
+
+3. v-once 指令
+页面数据只渲染一次，不会跟着数据变化。
+
+-->
