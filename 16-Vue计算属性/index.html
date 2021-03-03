@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>16-Vue计算属性</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p> {{name}} </p>
+    <p> {{age + 1}} </p>
+    <p> {{msg.split("").reverse().join("")}} </p>
+    <p> {{handleMsg}} </p>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: 'zsy',
+            age: 18,
+            msg: "6120ysz/moc.buhtig//:sptth"
+        },
+        // 定义计算属性
+        computed: {
+            handleMsg: function() {
+                let res = this.msg.split("").reverse().join("");
+                return res;
+            }
+        }
+    })
+</script>
+</html>
+<!--
+1. 插值语法特点
+可以在 {{}} 中编写合法的 JavaScript 表达式
+
+2. 在插值语法中编写 JavaScript 表达式缺点
+- 没有语法提示
+- 语句过于复杂不利于后期维护
+
+3. 如何解决？
+对于任何复杂逻辑，你都应当使用计算属性
+
+4. 注意点：
+- 虽然在定义计算属性的时候是通过一个函数返回的数据，
+  但是在使用计算属性的时候不能在计算属性名称后面加上小括号，
+  因为他是一个属性不是一个函数(方法)
+-->
