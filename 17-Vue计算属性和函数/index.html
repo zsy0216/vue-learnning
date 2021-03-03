@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>17-Vue计算属性和函数</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>通过计算属性处理：{{cptMsg}} </p>
+    <p>通过计算属性处理：{{cptMsg}} </p>
+    <p>通过计算属性处理：{{cptMsg}} </p>
+    <p>通过计算属性处理：{{cptTime}} 次 </p>
+
+    <p>通过方法处理： {{fnMsg()}} </p>
+    <p>通过方法处理： {{fnMsg()}} </p>
+    <p>通过方法处理： {{fnMsg()}} </p>
+    <p>通过方法处理：{{fnTime}} 次 </p>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: 'zsy',
+            age: 18,
+            msg: "6120ysz/moc.buhtig//:sptth",
+            fnTime: 0,
+            cptTime: 0
+        },
+        methods: {
+            fnMsg() {
+                this.fnTime++
+                return this.msg.split("").reverse().join("");
+            }
+        },
+        // 定义计算属性
+        computed: {
+            cptMsg: function() {
+                this.cptTime++
+                let res = this.msg.split("").reverse().join("");
+                return res;
+            }
+        }
+    })
+</script>
+</html>
+<!--
+1. 通过函数和计算属性都能实现上面的需求，区别是什么？
+- 函数特点：每次调用都会执行
+- 计算属性特点：只要返回的结果没有发生变化，计算属性只会执行一次
+
+2. 计算属性的应用场景
+由于计算属性会将返回的结果缓存起来，所以如果返回的数据不经常发生变化
+那么使用使用计算属性的性能要比使用函数的性能高
+
+-->
