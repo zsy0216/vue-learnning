@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08-Vue指令v-show</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h3 v-show="1">我是true</h3>
+  <h3 v-show="false">我是false</h3>
+
+  <h3 v-show="show">我是true</h3>
+  <h3 v-show="hidden">我是false</h3>
+
+  <h3 v-show="age >= 18">我是true</h3>
+  <h3 v-show="age < 18">我是false</h3>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+          show: true,
+          hidden: false,
+          age: 18,
+          score: 100
+        }
+    })
+</script>
+</html>
+<!--
+1. v-show指令
+v-show 和 v-if 一样都是条件渲染，取值为true就显示，false就不显示
+
+2. v-if 和 v-show 区别
+v-if：只要取值为false就不会创建元素；
+v-show：取值为false也会创建元素，只是如果取值为false会设置元素的display为none；
+
+3. v-if 和 v-show 应用场景
+由于取值为false时 v-if 不会创建元素，所以如果需要切换元素的显示和隐藏，每次v-if 都会创建和删除元素；
+由于取值为false时 v-show 会创建元素并设置display为none，所以切换元素显示和隐藏时不会重复创建和删除
+所以：如果开发中需要频繁切换元素显示隐藏，那么推荐使用v-show，否则使用 v-if
+-->
