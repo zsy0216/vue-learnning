@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01-Vue基本模板</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{name}}</h1>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: 'zsy'
+        }
+    })
+</script>
+</html>
+<!--
+1. MVVM 设计模式                                vue 中 MVVM 的划分
+M: Model 数据模型(保存数据，处理数据业务逻辑)    即vue实例对象中的data
+V: View 视图(展示数据，与用户交互)              即vue绑定的页面区域el
+VM: View Model 数据模型与视图的桥梁             即vue实例对象 vm
+
+2. Vue 中数据的单向传递
+我们把‘数据’交给‘Vue实例对象’，Vue实例对象将数据传递给界面
+M  -> VM  -> V
+-->
