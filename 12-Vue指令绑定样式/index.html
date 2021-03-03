@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>12-Vue指令绑定样式</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <p :style="{color: 'red'}">这是段落1</p>
+  <p :style="object">这是段落2</p>
+  <p :style="[object, blueObj]">这是段落3</p>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 VM */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+          object:{
+            color: 'red',
+            'font-size': '30px'
+          },
+          blueObj: {
+            background: 'skyblue'
+          }
+        }
+    })
+</script>
+</html>
+<!--
+1. 如何通过 v-bind 给 style 属性绑定数据
+- 将数据放到对象中
+  :style="{color: 'red', 'font-size': '50px'}"
+- 将数据放到Model对象中
+  object:{
+    color: 'red',
+    'font-size': '30px'
+  }
+
+2. 注意点：
+- 如果属性名称包含 "-", 那么必须用引号括起来
+- 如果需要绑定 Model 中的多个对象，可以放到一个数组中赋值
+
+- 和绑定类名一样，默认情况下 v-model 会去 Model中查询数据，默认无数据则无效
+  要使用上面 1 的方式绑定
+-->
