@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01-Vue基本模板</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{name}}</h1>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vue = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: 'zsy'
+        }
+    })
+</script>
+</html>
+<!--
+Vue 使用步骤
+1. 导入 vue
+2. 创建 vue 实例
+3. 声明控制区域
+4. 声明可用数据
+5. 使用数据渲染页面组件
+-->
