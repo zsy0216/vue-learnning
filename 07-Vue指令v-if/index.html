@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07-Vue指令v-if</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h3 v-if="1">我是true</h3>
+  <h3 v-if="false">我是false</h3>
+
+  <h3 v-if="show">我是true</h3>
+  <h3 v-if="hidden">我是false</h3>
+
+  <h3 v-if="age >= 18">我是true</h3>
+  <h3 v-if="age < 18">我是false</h3>
+
+  <h3 v-if="age >= 18">我是成年人</h3>
+  <h3 v-else>我是未成年</h3>
+
+  <h3 v-if="score >= 80">优秀</h3>
+  <h3 v-else-if="score >= 60">良好</h3>
+  <h3 v-else>一般</h3>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+          show: true,
+          hidden: false,
+          age: 18,
+          score: 100
+        }
+    })
+</script>
+</html>
+<!--
+1. v-if 指令
+条件渲染：如果 v-if 取值是true就渲染元素，否则不渲染。
+
+2. v-if 特点
+如果条件不满足根本不会创建这个元素（重点）
+
+3. v-if 注意点
+v-if 可以从模型中获取数据
+v-if 可以直接赋值一个表达式
+
+4. v-else 指令
+v-else 指令和 v-if 指令配合使用，当 v-if 不满足条件时渲染 v-else 中的元素内容
+
+5. v-else 注意点
+v-else 不能单独出现
+v-if 和 v-else 中间不能出现其他内容
+-->
