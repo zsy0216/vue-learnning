@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>09-Vue指令v-for</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <ul>
+    <li v-for="(value, index) in list"> {{index}} - {{value}}</li>
+  </ul>
+
+  <ul>
+    <li v-for="(value, index) in string"> {{index}} - {{value}}</li>
+  </ul>
+
+  <ul>
+    <li v-for="(value, index) in numbers"> {{index}} - {{value}}</li>
+  </ul>
+
+  <ul>
+    <li v-for="(value, key) in object"> {{key}} - {{value}}</li>
+  </ul>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+          list: ['zs', 'ls', 'ww', 'zl'],
+          string: 'zsy',
+          numbers: '12345',
+          object: {
+            name: 'zsy',
+            age: '18',
+            github: 'https://github.com/zsy0216'
+          }
+        }
+    })
+</script>
+</html>
+<!--
+1. v-for 指令
+相当于 JS 中的 for in 循环，可以根据数据多次渲染元素
+
+2. v-for 特点
+可以遍历数组，字符，数字，对象
+-->
