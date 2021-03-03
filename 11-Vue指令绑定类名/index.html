@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>11-Vue指令绑定类名</title>
+    <script src="js/vue.js"></script>
+    <style>
+      *{
+          margin: 0;
+          padding: 0;
+      }
+      .size {
+          font-size: 30px;
+      }
+      .color {
+          color: red;
+      }
+      .active {
+          background: skyblue;
+      }
+    </style>
+</head>
+<body>
+<div id="app">
+  <p class="size color active"> 这是段落 </p>
+
+  <p :class="['size', 'color', 'active']"> 这是段落1: 通过数组绑定 class </p>
+
+  <p :class="['size', 'color', flag ? 'active' : '']"> 这是段落2 通过三目运算符绑定 class </p>
+
+  <p :class="['size', 'color', {'active' : false}]"> 这是段落3：通过对应绑定 class </p>
+
+  <p :class="object"> 这是段落4: 通过实例中的对象来绑定 class </p>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 VM */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+          flag: false,
+          object: {
+            size: true,
+            color: true,
+            active: true
+          }
+        }
+    })
+</script>
+</html>
+<!--
+1. v-bind 指令的作用
+v-bind指令给"任意标签"的"任意属性"绑定数据；
+对于大部分的属性而言我们只需要直接赋值即可，例如 :value="name"
+但是对于 class 和 type 属性而言，它的格式比较特殊
+
+2. 通过 v-bind 绑定类名格式
+:class="['需要绑定类名', ...]"
+
+3. 注意点：
+- 直接赋值一个类名(没有放到数组中) 默认回去model中查找
+  :class = "需要绑定类名"
+  如果需要通过 v-bind 给 class 绑定类名，不能直接赋值
+  默认情况下 v-bind 回去 Model 中查找数据，但是 Model 中没有对应的类名
+
+- 想要 v-bind 去 style 中查找类名，那么必须把类名放到数组中,且用引号包裹起来
+
+- 如果是通过 v-bind 绑定类名，那么在绑定的时候可以编写三目运算符来实现按需绑定
+
+- v-bind 绑定类名， 可以通过对象决定是否需要绑定
+  格式：{'需要绑定类名' : 是否绑定}
+
+- v-bind 绑定类名， 可以使用 Model中的对象来替换数组
+  格式：{'需要绑定类名' : 是否绑定}
+-->
