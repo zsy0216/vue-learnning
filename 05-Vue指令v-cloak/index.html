@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05-Vue指令v-cloak</title>
+    <style>
+        [v-cloak] { display:none }
+    </style>
+</head>
+<body>
+<div id="app">
+  <h1>{{name}}</h1>
+  <h1 v-cloak>{{name}}</h1>
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+          name: 'zsy'
+        }
+    })
+</script>
+</html>
+<!--
+1. Vue 数据绑定过程
+- 会先将未绑定数据的界面展示给用户；
+- 然后再根据模型中的数据和控制的区域生成绑定数据之后的 HTML 代码
+- 最后再将绑定数据之后的 HTML 渲染到界面上
+
+正是在最终的 HTML 被生成渲染之前会先显示模板内容，
+所以如果用户网络比较慢或者网页性能较差时，用户会先看到模板内容。
+
+2. 如何解决这个问题？
+利用 v-cloak 配合 [v-cloak] {display:none} 默认先隐藏未渲染的界面；
+等到生成 HTML 渲染之后再重新显示
+
+3. v-cloak 指令作用：数据渲染之后自动显示元素
+-->
