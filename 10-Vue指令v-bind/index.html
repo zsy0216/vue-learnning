@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>10-Vue指令v-bind</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1>{{name}}</h1>
+  <h1 v-text="name"></h1>
+  <input type="text" v-bind:value="name"/>
+  <input type="text" :value="name"/>
+  <input type="text" :value="name + 'test'"/>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: 'zsy'
+        }
+    })
+</script>
+</html>
+<!--
+1. v-bind 指令
+在开发中想要给"元素"绑定数据，我们可以使用{{}}，v-text，v-html
+但是如果想要给"元素的属性"绑定数据，就必须使用 v-bind
+所以 v-bind 的作用是专门用于给"元素的属性"绑定数据的
+
+2. v-bind 格式
+v-bind:属性名称="绑定的数据"
+:属性名称="绑定的数据"
+
+3. v-bind 特点
+赋值的数据可以是任意一个合法的 JS 表达式
+例如  :属性名称="age + 1"
+
+4. 注意点：
+v-model 也可以将数据绑定到元素的属性，但是只局限于input、textarea、select标签
+而想要给其他标签的属性绑定数据，就需要用到 v-bind
+-->
