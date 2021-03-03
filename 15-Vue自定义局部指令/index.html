@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>15-Vue自定义局部指令</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app1">
+    <p v-style="'blue'">这是段落1 使用了全局指令</p>
+
+    <p v-color="'blue'">这是段落1 使用了局部指令</p>
+</div>
+<div id="app2">
+    <p v-style="'red'">这是段落2 使用了全局指令</p>
+
+    <p v-color="'red'">这是段落2 使用了局部指令</p>
+</div>
+</body>
+<script>
+    /* 自定义全局指令 v-style */
+    Vue.directive('style', {
+      // el: 被绑定指令的元素
+      bind: function (el, binding) {
+        el.style.color = binding.value
+      }
+    })
+
+    /* 1. 创建 vue 实例对象 VM */
+    let vm1 = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app1',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+        },
+        methods: {
+
+        }
+    })
+
+    let vm2 = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域 View
+        el: '#app2',
+        // 3. 声明vue控制区域可以使用的数据 Model
+        data: {
+        },
+        methods: {
+        },
+        directives: {
+            'color': {
+                bind: function (el, binding) {
+                    el.style.color = binding.value
+                }
+            }
+        }
+    })
+</script>
+</html>
+<!--
+1. 自定义全局指令的特点
+在任何一个 Vue 实例控制的区域都可以使用
+
+2. 自定义局部指令的特点
+只能在自定义的那个 Vue 实例中使用
+
+3. 如何自定义局部指令
+给创建Vue的实例中传递的对象添加
+key: 指令名称  value: 对象
+directives: {
+    'color': {
+        bind: function (el, binding) {
+            el.style.color = binding.value
+        }
+    }
+}
+-->
