@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>18-Vue自定义全局过滤器</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--  Vue会把name交给指定的过滤器处理之后，再把处理之后的结果插入元素  -->
+    <p>{{name | formatStr | formatStr2}}</p>
+</div>
+</body>
+<script>
+    <!--  自定义全局过滤器  -->
+    /*
+        参数1：过滤器名称
+        参数2：处理数据的函数
+        注意点：默认情况下处理数据的函数接收一个参数，就是当前要被处理的数据
+    * */
+    Vue.filter('formatStr', (value) => {
+        value = value.replace(/学院/g, '大学')
+        return value
+    });
+
+    Vue.filter('formatStr2', (value) => {
+        value = value.replace(/大学/g, '幼儿园')
+        return value
+    });
+
+    /* 1. 创建 vue 实例对象 */
+    let vm = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: '北京学院, 南京学院, 东京学院'
+        }
+    })
+</script>
+</html>
+<!--
+1. 过滤器
+过滤器和函数和计算属性一样都是用来处理数据的
+但是过滤器一般用于格式化插入的文本数据
+
+2. 如何自定义全局过滤器
+Vue.filter('过滤器名称', 过滤器处理函数(要处理的数据))
+
+3. 如何使用全局过滤器
+{{msg | 过滤器名称}}
+:value="msg | 过滤器名称"
+
+4. 注意点
+- 只能在插值语法和 v-bind 中使用
+- 过滤器可以连续使用
+
+-->
