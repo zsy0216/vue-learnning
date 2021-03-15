@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>20-Vue过滤器练习-格式化时间</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h2>{{ time | dateFormat("yyyy-MM-dd") }}</h2>
+</div>
+</body>
+<script>
+  /*
+  * 注意点：在使用过滤器的时候，可以在过滤器名称后面加上() 传递参数
+  * */
+  Vue.filter("dateFormat", function (value, format){
+    let date = new Date(value)
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1 + ""
+    let day = date.getDay() + ""
+    let hour = date.getHours() + ""
+    let minute = date.getMinutes() + ""
+    let second = date.getSeconds() + ""
+    if (format && format === "yyyy-MM-dd"){
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+    }
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${hour.padStart(2, "0")}:${minute.padStart(2, "0")}:${second.padStart(2, "0")}`
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      time: Date.now()
+    }
+  })
+</script>
+</html>
+<!--
+1. 过滤器可以传递参数，在处理函数的第二个参数接收
+
+2. padStart(number, String) 方法接收两个参数，由字符串调用
+  当字符串的长度不足 第一个参数 的长度时，会在前面填充 第二个参数 的值
+-->
