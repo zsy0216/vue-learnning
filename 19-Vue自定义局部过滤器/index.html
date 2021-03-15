@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>19-Vue自定义局部过滤器</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app1">
+    <!--  Vue会把name交给指定的过滤器处理之后，再把处理之后的结果插入元素  -->
+    <p>{{name | formatStr}}</p>
+</div>
+<div id="app2">
+    <p>{{name | formatStr}}</p>
+</div>
+</body>
+<script>
+    /* 1. 创建 vue 实例对象 */
+    let vm1 = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app1',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: '北京学院, 南京学院, 东京学院'
+        },
+        // 定义局部过滤器
+        filters: {
+            'formatStr': (value) => {
+                return value.replace(/学院/g, "大学")
+            }
+        }
+    })
+    let vm2 = new Vue({
+        // 2. 声明vue的实例对象控制页面的哪个区域
+        el: '#app2',
+        // 3. 声明vue控制区域可以使用的数据
+        data: {
+            name: '北京学院, 南京学院, 东京学院'
+        }
+    })
+</script>
+</html>
+<!--
+1. 自定义全局过滤器的特点
+在任何一个Vue实例控制的区域都可以使用
+
+2. 自定义局部过滤器的特点
+只能在自定义的那个Vue实例中使用
+
+3. 如何自定义一个局部指令
+给创建 Vue 实例时传递的对象添加
+filters: {
+    // key: 过滤器名称
+    // value: 过滤器处理函数
+    'formatStr': function(value) {}
+}
+-->
