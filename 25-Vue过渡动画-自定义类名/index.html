@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>25-Vue过渡动画-自定义类名</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .box {
+          margin-top: 50px;
+          width: 200px;
+          height: 200px;
+          background: #ff0000;
+      }
+
+      .enter-zsy {
+          opacity: 0;
+      }
+
+      .enter-to-zsy {
+          opacity: 1;
+          margin-left: 500px;
+      }
+
+      .enter-active-zsy {
+          transition: all 3s;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">切换显示状态</button>
+  <transition appear
+              enter-class="enter-zsy"
+              enter-active-class="enter-active-zsy"
+              enter-to-class="enter-to-zsy"
+  >
+    <div class="box" v-show="isShow"></div>
+  </transition>
+  >
+</div>
+</body>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      isShow: true
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 自定义类名动画
+在Vue中，除了
+  - 可以使用默认类名(v-xxx)来指定过渡动画
+  - 可以使用自定义类名前缀(yy-xxx)来指定过渡动画(transition name = "yy")
+  - 可以使用JS钩子函数里指定过渡动画
+  之外
+还可以使用自定义类名的方式来指定过渡动画
+  - 在 transition 设置 enter-class/enter-active-class/enter-to-class
+                      leave-class/leave-active-class/leave-to-class
+                      指定进入或离开三个过程对应的类名
+-->
