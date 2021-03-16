@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>28-Vue列表过渡</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .v-enter {
+          opacity: 0;
+      }
+
+      .v-enter-to {
+          opacity: 1;
+      }
+
+      .v-enter-active {
+          transition: all 3s;
+      }
+
+      .v-leave {
+          opacity: 1;
+      }
+
+      .v-leave-to {
+          opacity: 0;
+      }
+
+      .v-leave-active {
+          transition: all 3s;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <form>
+    <input type="text" v-model="name">
+    <input type="submit" @click.prevent="add" value="添加">
+  </form>
+  <transition-group appear tag="ul">
+    <li v-for="(person, index) in persons" :key="person.id" @click="del(index)">
+      <input type="checkbox">
+      <span>{{index}} - {{person.name}}</span>
+    </li>
+  </transition-group>
+</div>
+</body>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      persons: [
+        {name: "zs", id: 1},
+        {name: "ls", id: 2},
+        {name: "ww", id: 3}
+      ],
+      name: "",
+      id: 3
+    },
+    methods: {
+      add() {
+        this.id++
+        let lastPerson = this.persons[this.persons.length - 1]
+        let newPerson = {name: this.name, id: this.id}
+        // this.persons.push(newPerson)
+        this.persons.unshift(newPerson)
+        this.name = ""
+      },
+      del(index) {
+        this.persons.splice(index, 1)
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 如何同时给多个元素添加过渡动画
+- 通过 transition 可以给单个元素添加过渡动画，如果想给多个元素添加过渡，需要使用 transition-group
+- transition-group 和 transition 用法一致，只是一个给单元素，一个给多元素添加过渡动画
+
+2. transition-group 注意点：
+- 默认情况下 transition-group 会将动画的元素放到 span 标签中
+- 我们可以通过tag属性来指定将动画元素放到什么标签
+
+3. transition-group 动画混乱问题
+一般情况下动画出现混乱都是因为v-for 的key 重复问题。需要保证 key 唯一
+-->
