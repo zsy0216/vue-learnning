@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>23-Vue过渡动画-JS钩子</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .box {
+          margin-top: 50px;
+          width: 200px;
+          height: 200px;
+          background: #ff0000;
+      }
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">切换显示状态</button>
+  <!--
+  注意点：虽然我们是通过JS钩子函数来实现过渡动画，但是Vue默认还是会去查找类名。
+  为了不让Vue去查找类名，可以给transition添加 v-bind:css="false"
+  -->
+  <transition appear
+              v-bind:css="false"
+              v-on:before-enter="beforeEnter"
+              v-on:enter="enter"
+              v-on:after-enter="afterEnter">
+    <div class="box" v-show="isShow"></div>
+  </transition>
+</div>
+</body>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      isShow: true
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      },
+      // 第一个参数代表执行动画的元素
+      beforeEnter(el) {
+        // 进入动画之前
+        el.style.opacity = "0"
+
+      },
+      // 第二个参数 done 回调函数说明动画指定完毕，不调用后面afterEnter不会执行
+      enter(el, done) {
+        // 进入动画过程中
+        /*
+        * 注意点：如果是通过JS钩子来实现过渡动画
+        * 那么必须在动画执行过程中的钩子函数中添加上
+        * el.offsetWidth 或 el.offsetHeight
+        * */
+        // el.offsetWidth
+        el.offsetHeight
+        el.style.transition = "all 3s"
+        // done()
+        /*
+        * 注意点：如果想让元素一进来就有动画，除了设置appear外，最好延迟调用 done 回调函数
+        * */
+        setTimeout(() => {
+          done()
+        }, 0)
+      },
+      afterEnter(el) {
+        // 进入动画执行完毕
+        el.style.opacity = "1"
+        el.style.marginLeft = "300px"
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 上节过渡存在的问题
+通过transition+类名的方式确实能够实现过渡效果，但是实现的过渡效果并不能保存动画之后的状态，
+因为Vue内部的实现是在过程中动态绑定类名，过程完成之后删除类名，而因为删除了类名，动画则完成后消失。
+
+2. 在Vue中如何保存过渡动画最终的效果——通过Vue提供的JS钩子来实现过渡动画
+v-on:before-enter="beforeEnter" 进入动画之前
+v-on:enter="enter" 进入动画执行过程中
+v-on:after-enter="afterEnter" 进入动画完成之后
+v-on:enter-cancelled="enterCancelled" 进入动画被取消
+
+v-on:before-leave="beforeLeave" 进入动画之前
+v-on:leave="leave" 进入动画执行过程中
+v-on:after-leave="afterLeave" 进入动画完成之后
+v-on:leave-cancelled="leaveCancelled" 进入动画被取消
+
+3. JS钩子实现过渡动画注意点：
+- 在动画过程中必须写上 el.offsetWidth 或 el.offsetHeight
+- 在 enter 和 leave 方法中必须调用 done 回调函数，否则 after-enter 和 enter-leave不会执行
+- 需要添加初始动画，那么需要把 done 方法包裹到 setTimeout 方法中调用
+-->
