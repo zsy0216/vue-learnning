@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>24-Vue过渡动画-Velocity</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .box {
+          margin-top: 50px;
+          width: 200px;
+          height: 200px;
+          background: #ff0000;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">切换显示状态</button>
+  <transition appear
+              v-bind:css="false"
+              v-on:before-enter="beforeEnter"
+              v-on:enter="enter"
+              v-on:after-enter="afterEnter">
+    <div class="box" v-show="isShow"></div>
+  </transition>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      isShow: true
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      },
+      // 第一个参数代表执行动画的元素
+      beforeEnter(el) {
+        // 进入动画之前
+        el.style.opacity = "0"
+
+      },
+      // 第二个参数 done 回调函数说明动画指定完毕，不调用后面afterEnter不会执行
+      enter(el, done) {
+        // 进入动画过程中
+        Velocity(el, {opacity: 1, marginLeft: "300px"}, 3000)
+        done()
+      },
+      afterEnter(el) {
+        // 进入动画执行完毕
+        el.style.opacity = "1"
+        el.style.marginLeft = "300px"
+      }
+    }
+  })
+</script>
+</html>
+<!--
+使用 Velocity 实现过渡动画，在Vue中除了可以自己实现动画外，还可以结合第三方框架实现过渡动画
+1. 导入 Velocity 库
+2. 在动画指定过程钩子函数中编写 Velocity 动画
+-->
