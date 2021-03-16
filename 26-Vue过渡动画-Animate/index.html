@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>26-Vue过渡动画-Animate</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .box {
+          margin-top: 50px;
+          width: 200px;
+          height: 200px;
+          background: #ff0000;
+      }
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">切换显示状态</button>
+  <transition appear
+              enter-class=""
+              enter-active-class="animated bounceInRight"
+              enter-to-class=""
+  >
+    <div class="box" v-show="isShow"></div>
+  </transition>
+</div>
+</body>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      isShow: true
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 配合 Animate.css 实现过渡动画
+- 导入 Animate.css 库
+- 在执行过程中的属性 enter-active-class 上绑定需要的类名
+-->
