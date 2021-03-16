@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>22-Vue过渡动画</title>
+  <script src="js/vue.js"></script>
+  <style>
+      .box {
+          margin-top: 50px;
+          width: 200px;
+          height: 200px;
+          background: #ff0000;
+      }
+      .v-enter {
+          opacity: 0;
+      }
+      .v-enter-to {
+          opacity: 1;
+      }
+      .v-enter-active {
+          transition: all 3s;
+      }
+      .v-leave {
+          opacity: 1;
+      }
+      .v-leave-to {
+          opacity: 0;
+      }
+      .v-leave-active {
+          transition: all 3s;
+      }
+
+      .new-enter {
+          opacity: 0;
+      }
+      .new-enter-to {
+          margin-left: 300px;
+          opacity: 1;
+      }
+      .new-enter-active {
+          transition: all 3s;
+      }
+      .new-leave {
+          opacity: 1;
+      }
+      .new-leave-to {
+          opacity: 0;
+      }
+      .new-leave-active {
+          transition: all 1s;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">切换显示状态</button>
+  <transition>
+    <div class="box" v-show="isShow"></div>
+  </transition>
+
+  <transition appear name="new">
+    <div class="box" v-show="isShow"></div>
+  </transition>
+</div>
+</body>
+<script>
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      isShow: true
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 如何给Vue控制的元素添加过渡动画
+- 将需要执行动画的元素放到 transition 组件中；
+- 当 transition 组件中的元素显示时会自动查找 .v-enter/.v-enter-active/.v-enter-to 类名
+  当 transition 组件中的元素隐藏时会自动查找 .v-leave/.v-leave-active/.v-leave-to 类名
+- 我们只需要在.v-enter 和 .v-leave-to 中指定动画开始的状态
+           在.v-enter-active 和 .v-leave-active 中指定动画执行的状态
+  即可完成动画
+
+2. transition 注意点
+- 一个 transition 组件只能放一个元素，多个元素无效
+  如果想给多个元素添加过渡动画，那么就必须创建多个 transition 组件
+
+3. 初始动画设置
+默认情况下第一次进入的时候是没有动画的，如果想一进来就有动画，
+我们可以通过给transition添加 appear 属性的方式告诉Vue 第一次进入显示动画
+
+4. 如何给多个不同的元素指定不同的动画
+如果有多个不同的元素需要执行不同的过渡动画，那么我们可以通过给transition指定name的方式来分别指定不同元素的动画效果。
+不同name对应着不同的动画类名，通过不同的类名定义的样式来区分不同元素的动画
+.v-enter/.v-enter-active/.v-enter-to 类名对应 .name-enter/.name-enter-active/.name-enter-to
+.v-leave/.v-leave-active/.v-leave-to 类名对应 .name-leave/.name-leave-active/.name-leave-to
+-->
