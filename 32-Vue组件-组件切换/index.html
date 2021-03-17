@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>32-Vue组件-组件切换</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <button @click="toggle">元素切换</button>
+  <p v-if="isShow">首页</p>
+  <img v-else width="200px" src="images/bg.jpg"/>
+
+  <hr/>
+
+  <button @click="photoToggle">组件切换</button>
+  <photo v-if="photoShow"></photo>
+  <home v-else></home>
+</div>
+<template id="home">
+  <div>
+    <p>组件首页 </p>
+  </div>
+</template>
+<template id="photo">
+  <img width="200px" src="images/bg.jpg"/>
+</template>
+</body>
+<script>
+  <!-- 自定义全局组件 -->
+  Vue.component("home", {
+    template: '#home'
+  })
+
+  Vue.component("photo", {
+    template: '#photo'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {
+        isShow: true,
+        photoShow: false
+      }
+    },
+    methods: {
+      toggle() {
+        this.isShow = !this.isShow
+      },
+      photoToggle() {
+        this.photoShow = !this.photoShow
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 组件切换
+对于普通的元素我们可以通过v-if来实现切换，对于组件同样如此。
+因为组件的本质就是一个自定义元素
+-->
