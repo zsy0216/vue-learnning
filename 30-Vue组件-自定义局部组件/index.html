@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>30-Vue组件-自定义局部组件</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app1">
+  <self-component></self-component>
+  <vm2-component></vm2-component>
+</div>
+<div id="app2">
+  <self-component></self-component>
+  <vm2-component></vm2-component>
+</div>
+</body>
+<template id="main">
+  <div>
+    <img width="200px" src="images/bg.jpg"/>
+    <p>这是全局组件.</p>
+  </div>
+</template>
+<template id="main2">
+  <div>
+    <img width="200px" src="images/fm.jpg"/>
+    <p>这是组件2的自定义局部组件.</p>
+  </div>
+</template>
+<script>
+  <!-- 自定义全局组件 -->
+  Vue.component("self-component", {
+    template: '#main'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app1',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {}
+  })
+
+  let vm2 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app2',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    // 局部组件
+    components: {
+      'vm2-component': {
+        template: '#main2'
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 自定义全局组件特点
+在任何一个Vue实例控制的区域中都可以使用
+
+2. 自定义局部组件特点
+只能在自定义的那个Vue实例控制的区域中可以使用
+
+3. 如何自定义一个局部组件
+在vue实例中新增component: {}
+在{}中通过key-value的形式注册组件
+components: {
+  'vm2-component': {
+    template: '#main2'
+  }
+}
+-->
