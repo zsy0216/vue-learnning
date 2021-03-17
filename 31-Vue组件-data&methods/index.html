@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>31-Vue组件-data&methods</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <!--
+  在Vue实例控制的区域中使用的函数，系统会自动在Vue实例中查找有没有对应的方法
+  -->
+  <button @click="addBtn">Vue实例按钮</button>
+  <p>{{app_data}}</p>
+
+  <hr/>
+
+  <self-component></self-component>
+
+  <hr/>
+  <component-add-data></component-add-data>
+  <component-add-data></component-add-data>
+  <component-add-data></component-add-data>
+
+</div>
+<template id="main">
+  <div>
+    <img width="200px" src="images/bg.jpg"/>
+    <!--  在自定义组件中使用的函数，系统会在自定组件中查找有没有对应的方法  -->
+    <button @click="selfAddBtn">自定义组件按钮</button>
+    <p>{{self_data}} </p>
+  </div>
+</template>
+
+<template id="add-data">
+  <div>
+    <button @click="addNumber">累加</button>
+    <p>{{number}} </p>
+  </div>
+</template>
+</body>
+<script>
+  <!-- 自定义全局组件 -->
+  Vue.component("self-component", {
+    template: '#main',
+    // 一个组件的 data 选项必须是一个函数
+    data() {
+      return {
+        self_data: "自定义组件 data"
+      }
+    },
+    methods: {
+      selfAddBtn() {
+        alert("自定义组件中的按钮点击")
+      }
+    }
+  })
+
+  Vue.component("component-add-data", {
+    template: '#add-data',
+    /*
+     * 一个组件的 data 选项必须是一个函数
+     * 否则多个组件会共用一份数据，导致数据混乱
+     */
+    data() {
+      return {
+        number: 0
+      }
+    },
+    methods: {
+      addNumber() {
+        this.number++
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      app_data: "Vue 实例 data"
+    },
+    methods: {
+      addBtn() {
+        alert("Vue 实例的按钮点击")
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 自定义组件中的data和methods
+Vue实例控制的区域相当于一个大的组件，在大组件中我们可以使用data和methods
+而我们自定义的组件也属于组件，在自定义组件中也可以使用data和methods
+
+2. 自定义组件data注意点
+一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝。
+
+3. 自定义组件的data为什么是一个函数
+因为组件可以被复用，为了保证复用时每个组件的数据都是独立的，所以必须是一个函数
+-->
