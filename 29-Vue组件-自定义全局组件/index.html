@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>29-Vue组件-自定义全局组件</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <!-- 3.3 使用注册好的组件 -->
+  <component-extend></component-extend>
+
+  <component-obj></component-obj>
+
+  <component-script></component-script>
+
+  <component-template></component-template>
+</div>
+</body>
+<script id="info" type="text/html">
+  <div>
+    <img width="200px" src="images/fm.jpg"/>
+    <p>this is a description.</p>
+  </div>
+</script>
+
+<template id="main">
+  <div>
+    <img width="200px" src="images/bg.jpg"/>
+    <p>this is a description.</p>
+  </div>
+</template>
+<script>
+  // 3.1 创建组件构造器
+  let Profile = Vue.extend({
+    // 组件模板只能有一个根元素
+    template: `
+      <div>
+        <img width="200px" src="images/fm.jpg"/>
+        <p>this is a description.</p>
+      </div>`
+  })
+  /*
+   * 3.2 注册已经创建好的组件
+   * 第一个参数：指定注册的组件的名称
+   * 第二个参数：传入已经创建好的组件构造器
+   */
+  Vue.component("component-extend", Profile)
+
+  let obj = {
+    // 组件模板只能有一个根元素
+    template: `
+      <div>
+        <img width="200px" src="images/bg.jpg"/>
+        <p>this is a description.</p>
+      </div>`
+  }
+  // 这里会自动调用 extend 方法
+  Vue.component("component-obj", obj)
+
+  Vue.component("component-script", {
+    template: '#info'
+  })
+
+  Vue.component("component-template", {
+    template: '#main'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {}
+  })
+</script>
+</html>
+<!--
+Vue 两大核心：1.数据驱动界面改变 2.组件化
+
+1. 什么是组件？什么是组件化？
+- 在前端开发中组件就是把一个很大的界面拆分为多个小的界面，每一个小的界面就是一个组件
+- 将大界面拆分为小界面的过程就是组件化
+
+2. 组件化的好处
+- 可以简化 Vue 实例的代码
+- 可以提高复用性
+
+3. Vue中如何创建和使用组件？
+- 3.1 创建组件构造器
+- 3.2 注册已经创建好的组件
+- 3.3 使用注册好的组件
+
+4. 创建组件简化
+- 第一种
+let Profile = Vue.extend({
+  template: `
+    <div>
+      <img width="200px" src="images/fm.jpg"/>
+      <p>this is a description.</p>
+    </div>`
+})
+Vue.component("component-extend", Profile)
+
+- 第二种，创建obj 或者将内容直接放入 Vue.component 第二个参数
+let obj = {
+  template: `
+    <div>
+      <img width="200px" src="images/bg.jpg"/>
+      <p>this is a description.</p>
+    </div>`
+}
+// 这里会自动调用 extend 方法
+Vue.component("component-obj", obj)
+
+- 第三种 会有代码提示
+<script id="info" type="text/html">
+  <div>
+    <img width="200px" src="images/fm.jpg"/>
+    <p>this is a description.</p>
+  </div>
+</script>
+<script>
+Vue.component("component-script", {
+  template: '#info'
+})
+</script>
+
+- 第四种
+<template id="main">
+  <div>
+    <img width="200px" src="images/bg.jpg"/>
+    <p>this is a description.</p>
+  </div>
+</template>
+<script>
+Vue.component("component-script", {
+  template: '#main'
+})
+</script>
+-->
