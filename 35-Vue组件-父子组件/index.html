@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>35-Vue组件-父子组件</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <home></home>
+  <father></father>
+</div>
+<template id="home">
+  <div>
+    <p> 局部组件 </p>
+  </div>
+</template>
+
+<template id="father">
+  <div>
+    <p> 父组件 </p>
+    <!--  子组件只能在定义它的父组件中使用  -->
+    <son></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <p> 子组件 </p>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    components: {
+      'son': {
+        template: '#son'
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {},
+    components: {
+      'home': {
+        template: '#home'
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. 什么是父子组件？
+在一个组件中又定义了其他组件就是父子组件。
+其实局部组件就是最简单的父子组件，因为我们说过可以把Vue实例看成一个大组件
+我们在Vue实例中定义了局部组件，就相当于在大组件里面定义了小组件。
+
+2. 如何定义其他的父子组件？
+前面我们说过，自定义组件中可以使用data和methods，当然自定义组件中也可以使用components
+所以，我们也可以在自定义组件中再定义其他组件
+-->
