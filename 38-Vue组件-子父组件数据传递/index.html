@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>38-Vue组件-子父组件数据传递</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <button @click="say">父组件按钮</button>
+    <son @father_say="say"></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <button @click="say">子组件按钮</button>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    methods: {
+      say(data) {
+        alert('父组件的方法 - ' + data)
+      }
+    },
+    components: {
+      'son': {
+        template: '#son',
+        data() {
+          return{}
+        },
+        methods: {
+          /*
+           * 子组件自定义方法通过 this.$emit('father_say') 调用父组件方法
+           * 第一个参数：自定义的调用父组件方法的接收方法名
+           * 后面的参数：传递给父组件方法的参数列表
+           */
+          say() {
+            alert('子组件方法 - 下面调用父组件方法')
+            this.$emit('father_say', '子组件数据')
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 如何将子组件数据传递给父组件
+前面说到，子组件可以调用父组件传递过来的方法，那么我们可以在调用父组件方法的时候给方法传递参数
+子组件传递给父组件方法的参数，就是子组件传递给父组件的数据
+
+子组件自定义方法通过 this.$emit('father_say', '子组件数据') 调用父组件方法
+第一个参数：自定义的调用父组件方法的接收方法名
+后面的参数：传递给父组件方法的参数列表
+-->
