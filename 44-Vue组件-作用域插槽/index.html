@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>44-Vue组件-作用域插槽</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <son>
+      <!-- slot-scope="abc" 接收子组件插槽暴露的数据 -->
+      <template slot-scope="abc">
+        <div>这里接收子组件插槽暴露的数据 - {{abc.names}}</div>
+        <li v-for="name in abc.names">{{name}}</li>
+      </template>
+    </son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <h1>this is 头部 -- {{names}}</h1>
+
+    <!-- :names="names" 将子组件中的names数据暴露给父组件 -->
+    <slot :names="names">默认插槽数据 - {{names}}</slot>
+
+    <h1>this is 底部</h1>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    data() {
+      return {}
+    },
+    components: {
+      'son': {
+        template: '#son',
+        data() {
+          return {
+            names: ['zs', 'ls', 'ww', 'zl']
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 什么是作用域插槽？
+作用域插槽就是带数据的插槽，就是让父组件在填充子组件插槽内容时也能使用子组件的数据
+
+2. 如何使用作用域插槽
+- 在 slot 中通过 v-bind:数据名称='数据名称' 的方式暴露数据
+- 在父组件中通过 <template slot-scope='作用域名称'> 接收数据
+- 在父组件的 <template></template> 中通过 作用域名称.数据名称 方式使用数据
+
+3. 作用域插槽的应用场景
+子组件提供数据，父组件决定如何渲染
+-->
