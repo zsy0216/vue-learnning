@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>39-Vue组件-组件命名</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father-component></father-component>
+</div>
+
+<template id="father">
+  <div>
+    <button @click="say">父组件按钮</button>
+    <son @parent-say="say" :parent-name="name"></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <p>子组件 - {{parentName}}</p>
+    <button @click="say">子组件按钮</button>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("fatherComponent", {
+    template: "#father",
+    data() {
+      return {
+        name: 'zhangsan'
+      }
+    },
+    methods: {
+      say() {
+        alert('父组件的方法')
+      }
+    },
+    components: {
+      'son': {
+        template: '#son',
+        props: ['parentName']
+        ,
+        methods: {
+          say() {
+            alert('子组件方法 - 下面调用父组件方法')
+            this.$emit('parent-say')
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 组件命名的注意点
+- 注册组件的时候使用的 '驼峰命名'，那么在使用时需要转换成 '短横线分隔命名'
+  例如：注册时 -> fatherComponent  使用时 -> father-component
+
+- 在传递参数的时候如果想使用 '驼峰命名'，那么就必须写 '短横线分隔命名'
+  例如：传递时 -> parent-name = 'name'  接收时 -> props: ['parentName']
+
+- 在传递方法的时候不能使用 '驼峰命名'，只能用 '短横线分隔命名'
+  @parent-say = 'say'  -> this.$emit('parent-say')
+-->
