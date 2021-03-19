@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>40-Vue组件-数据方法多级传递</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <grandfather></grandfather>
+</div>
+
+<template id="grandfather">
+  <div>
+    <p>grandfather - {{name}}</p>
+    <button @click="say">祖组件按钮</button>
+    <hr>
+    <father :gfname="name" @gfsay="say"></father>
+  </div>
+</template>
+
+<template id="father">
+  <div>
+    <p>father - {{gfname}}</p>
+    <button @click="fatherFn">父组件按钮</button>
+    <hr>
+    <son :fname="gfname" @fsay="fatherFn"></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <p>son - {{fname}}</p>
+    <button @click="sonFn">子组件按钮</button>
+  </div>
+</template>
+</body>
+<script>
+  // 爷爷组件
+  Vue.component("grandfather", {
+    template: "#grandfather",
+    data() {
+      return {
+        name: 'zhangsan'
+      }
+    },
+    methods: {
+      say() {
+        alert("grandfather - say")
+      }
+    },
+    // 爸爸组件
+    components: {
+      'father': {
+        template: '#father',
+        props: ['gfname'],
+        methods: {
+          fatherFn() {
+            this.$emit('gfsay')
+          }
+        },
+        // 儿子组件
+        components: {
+          'son': {
+            template: '#son',
+            props: ['fname'],
+            methods: {
+              sonFn() {
+                this.$emit('fsay')
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 数据和方法的多级传递
+在Vue多级组件中，数据和方法的传递时，必须一级一级的向下传递
+
+-->
