@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>41-Vue组件-匿名插槽</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <!-- 需求：在使用子组件的时候，给子组件中动态添加一些内容 -->
+    <son>
+      <!--
+       默认情况下是不能在使用子组件的时候，给子组件动态添加内容的
+       如果想给子组件动态添加内容，那么就必须使用插槽
+       -->
+      <h1>这是向插槽中添加的内容1</h1>
+      <h1>这是向插槽中添加的内容2</h1>
+      <h1>这是向插槽中添加的内容3</h1>
+    </son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <h1>this is 头部</h1>
+    <slot>默认插槽数据</slot>
+    <slot>默认插槽数据</slot>
+
+    <h1>this is 底部</h1>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    data() {
+      return {}
+    },
+    components: {
+      'son': {
+        template: '#son'
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 什么是插槽？
+Vue中使用 v-slot 标签代表一个插槽，插槽中可以被替换为任何模板代码，包括html
+
+2. 为什么要使用插槽？
+默认情况下是不能在使用子组件的时候给子组件动态添加内容的，如果想给子组件动态添加内容，那么就必须使用插槽。
+<son> XXX <son/> 像这样直接在使用组件标签时向里面添加内容是不被允许的。
+
+<template id="son">
+<div>
+<slot><slot/>
+<div/>
+<template>
+在组件中定义插槽后，再向组件标签中添加内容时，添加的内容会将插槽标签替换掉。
+
+3. 匿名插槽
+插槽是可以指定名称的，如果没有指定名称，那么称之为匿名插槽
+匿名插槽的特点：有多少个匿名插槽，填充的数据就会被拷贝几份，一般只写一个匿名插槽
+
+注意点：
+插槽可以指定默认数据，如果使用者没有填充值，就会使用默认数据
+-->
