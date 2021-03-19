@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>37-Vue组件-父子组件方法传递</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <button @click="say">父组件按钮</button>
+    <son @father_say="say"></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <button @click="say">子组件按钮</button>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    methods: {
+      say() {
+        alert('父组件的方法')
+      }
+    },
+    components: {
+      'son': {
+        template: '#son',
+        methods: {
+          // 子组件自定义方法通过 this.$emit('father_say') 调用父组件方法
+          say() {
+            alert('子组件方法')
+            this.$emit('father_say')
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 父子组件方法传递
+在Vue中子组件是不能访问父组件的方法的，如果想调用父组件的方法，必须通过父组件传递
+
+2. 父组件如何传递方法
+- 在父组件中通过 v-on 传递方法，传递格式 v-on:自定义接收方法名 = '要传递的方法'
+
+3. 子组件如何接收方法
+- 在子组件中自定义一个方法，在自定义方法中通过 this.$emit('自定义接收方法名') 调用传递过来的方法
+-->
