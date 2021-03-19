@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>36-Vue组件-父子组件数据传递</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <p> 父组件 - {{ name }} </p>
+    <p> 父组件 - {{ age }} </p>
+    <!--  子组件只能在定义它的父组件中使用  -->
+    <son :father_name="name" :father_age="age"></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <p> 子组件 - {{father_name}}</p>
+    <p> 子组件 - {{father_age}}</p>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    data() {
+      return {
+        name: 'zs',
+        age: 18
+      }
+    },
+    components: {
+      'son': {
+        template: '#son',
+        props: ['father_name', 'father_age']
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 父子组件数据传递
+在Vue中子组件是不能访问父组件的数据的，如果要访问父组件中的数据，必须通过父组件传递
+
+2. 父组件如何传递数据
+- 在父组件中通过 v-bind 传递数据，传递格式 v-bind:自定义接收名称 = '要传递的数据'
+
+3. 子组件如何接收数据
+- 子组件通过定义 props 属性接收数据，接收格式 props:['自定义接收名称']
+
+4. 自我补充：自定义接收名称时不要使用 -
+   '-' 两边的字符会无法识别
+Property or method "father" is not defined on the instance but referenced during render
+-->`
