@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>43-Vue组件-v-slot指令</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <!-- 需求：在使用子组件的时候，给子组件中动态添加一些内容 -->
+    <son>
+      <template v-slot:one>
+        <h1>这是替换插槽1的内容1</h1>
+        <h1>这是替换插槽1的内容2</h1>
+      </template>
+      <template #two>
+        <h1>这是替换插槽2的内容1</h1>
+        <h1>这是替换插槽2的内容2</h1>
+      </template>
+    </son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <h1>this is 头部</h1>
+
+    <slot name="one">默认插槽数据</slot>
+    <slot name="two">默认插槽数据</slot>
+
+    <h1>this is 底部</h1>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    data() {
+      return {}
+    },
+    components: {
+      'son': {
+        template: '#son'
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 什么是 v-slot 指令？
+v-slot 指令是 vue2.6 中用于替代 slot 属性的一个指令
+在 Vue 2.6 之前我们通过 slot 属性告诉 Vue 当前内容填充到哪一个具名插槽
+在 Vue 2.6 之后我们通过 v-slot 指令告诉 Vue 当前内容填充到哪一个具名插槽
+
+2. 注意点
+v-slot 指令只能用在 template 标签上，可以使用 # 号代替 v-slot:
+<template v-slot:one>
+<template #two>
+-->
