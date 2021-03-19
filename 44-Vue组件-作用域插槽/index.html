@@ -14,8 +14,13 @@
   <div>
     <son>
       <!-- slot-scope="abc" 接收子组件插槽暴露的数据 -->
-      <template slot-scope="abc">
-        <div>这里接收子组件插槽暴露的数据 - {{abc.names}}</div>
+      <template v-slot:default="abc">
+        <div>匿名插槽插槽暴露的数据 - {{abc.names}}</div>
+        <li v-for="name in abc.names">{{name}}</li>
+      </template>
+
+      <template #test="abc">
+        <div>具名插槽插槽暴露的数据 - {{abc.names}}</div>
         <li v-for="name in abc.names">{{name}}</li>
       </template>
     </son>
@@ -27,7 +32,9 @@
     <h1>this is 头部 -- {{names}}</h1>
 
     <!-- :names="names" 将子组件中的names数据暴露给父组件 -->
-    <slot :names="names">默认插槽数据 - {{names}}</slot>
+    <slot :names="names">匿名插槽数据 - {{names}}</slot>
+
+    <slot name="test" :names="names">默认插槽数据 - {{names}}</slot>
 
     <h1>this is 底部</h1>
   </div>
@@ -71,6 +78,14 @@
 - 在 slot 中通过 v-bind:数据名称='数据名称' 的方式暴露数据
 - 在父组件中通过 <template slot-scope='作用域名称'> 接收数据
 - 在父组件的 <template></template> 中通过 作用域名称.数据名称 方式使用数据
+
+3. Vue 2.6 v-slot 指令
+对于作用域插槽，v-slot 指令替换了 slot-scope
+也就是说，我们除了可以通过v-slot指令告诉Vue内容要填充到哪一个具名插槽中。
+还可以通过 v-slot 指令告诉 Vue 如何接收作用域插槽暴露的数据
+
+使用方法
+v-slot:插槽名称='作用域名称'
 
 3. 作用域插槽的应用场景
 子组件提供数据，父组件决定如何渲染
