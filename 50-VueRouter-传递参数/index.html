@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>50-VueRouter-传递参数</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <style>
+      .z-active {
+          background: red;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <router-link to="/one?name=zs&age=12" tag="button">切换到第一个界面</router-link>
+  <router-link to="/two/ls/13" tag="button">切换到第二个界面</router-link>
+
+  <!-- 路由出口 -->
+  <router-view></router-view>
+</div>
+<template id="one">
+  <div class="onepage">
+    <p>第一个界面</p>
+  </div>
+</template>
+<template id="two">
+  <div class="twopage">
+    <p>第二个界面</p>
+  </div>
+</template>
+</body>
+<script>
+  // 定义组件
+  const one = {
+    template: '#one',
+    created() {
+      console.log(this.$route);
+      console.log(this.$route.query.name);
+      console.log(this.$route.query.age);
+    }
+  }
+  const two = {
+    template: '#two',
+    created() {
+      console.log(this.$route)
+      console.log(this.$route.params.name)
+      console.log(this.$route.params.age)
+    }
+  }
+
+  // 定义路由规则
+  const routes = [
+    // 通过重定向设置默认导航路由
+    // {path: '/', redirect:'/one'},
+    {path: '/one', component: one},
+    {path: '/two/:name/:age', component: two}
+  ]
+  // 根据路由规则创建路由对象
+  const router = new VueRouter({
+    routes,
+    linkActiveClass: 'z-active'
+  })
+
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    components: {
+      one, two
+    },
+    // 将路由router对象绑定到Vue实例
+    router
+  })
+</script>
+</html>
+<!--
+1. Vue Router 传递参数
+只要将 Vue Router 挂载到了 Vue 实例对象上，我们就可以通过 vue.$route拿到路由对象
+只要能拿到路由对象，就可以通过路由对象拿到传递的参数
+
+2. 如何传递？
+方式一：通过 URL 参数(?key=value&key=value)，通过 this.$route.query 获取
+方式二：通过占位符传递(路由规则中/:key/:key，路径中/value/value)，通过 this.$route.params 获取
+
+-->
