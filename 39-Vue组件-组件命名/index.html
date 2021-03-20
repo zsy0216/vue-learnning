@@ -65,12 +65,12 @@
 </script>
 </html>
 <!--
-1. 组件命名的注意点
+1. 组件命名的注意点 (在Vue标签中使用带短横线，在js代码中是驼峰命名)
 - 注册组件的时候使用的 '驼峰命名'，那么在使用时需要转换成 '短横线分隔命名'
   例如：注册时 -> fatherComponent  使用时 -> father-component
 
 - 在传递参数的时候如果想使用 '驼峰命名'，那么就必须写 '短横线分隔命名'
-  例如：传递时 -> parent-name = 'name'  接收时 -> props: ['parentName']
+  例如：传递时 -> :parent-name = 'name'  接收时 -> props: ['parentName']
 
 - 在传递方法的时候不能使用 '驼峰命名'，只能用 '短横线分隔命名'
   @parent-say = 'say'  -> this.$emit('parent-say')
