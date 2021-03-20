@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>49-VueRouter-基本介绍</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <style>
+      .z-active {
+          background: red;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <router-link to="/one" tag="button">切换到第一个界面</router-link>
+  <router-link to="/two" tag="button">切换到第二个界面</router-link>
+
+  <!-- 路由出口 -->
+  <router-view></router-view>
+</div>
+<template id="one">
+  <div class="onepage">
+    <p>第一个界面</p>
+  </div>
+</template>
+<template id="two">
+  <div class="twopage">
+    <p>第二个界面</p>
+  </div>
+</template>
+</body>
+<script>
+  // 定义组件
+  const one = {
+    template: '#one'
+  }
+  const two = {
+    template: '#two'
+  }
+
+  // 定义路由规则
+  const routes = [
+    // 通过重定向设置默认导航路由
+    {path: '/', redirect:'/one'},
+    {path: '/one', component: one},
+    {path: '/two', component: two}
+  ]
+  // 根据路由规则创建路由对象
+  const router = new VueRouter({
+    routes,
+    linkActiveClass: 'z-active'
+  })
+
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    components: {
+      one, two
+    },
+    // 将路由router对象绑定到Vue实例
+    router
+  })
+</script>
+</html>
+<!--
+1， 什么是 Vue Router？
+Vue Router 和 v-if/v-show 一样，都是用来切换组件的显示的
+v-if/v-show 是标记来切换（true、false）
+Vue Router 用哈希来切换（#xxx）
+与 v-if/v-show 相比强大的是 Vue Router 不仅仅能够切换组件的显示，还能够在切换的时候传递参数
+
+2. Vue Router 使用
+- 导入 Vue Router
+- 定义路由规则
+- 根据路由规则创建路由对象
+- 将路径对象挂载到 Vue 实例中
+- 修改 URL 哈希值
+- 通过 <router-view> 渲染匹配的组件
+
+3. 注意点:
+- Vue Router 提供了一个专门用于设置 hash 的标签 router-link
+<router-link to='/one'></router-link>
+
+- 默认情况下，Vue 使用 a标签来渲染 router-link标签
+可以通过router-link标签 tag 属性来指定用什么标签渲染
+
+4. 导航激活状态
+创建路由对象时设置 linkActiveClass 默认值为 router-link-active
+-->
