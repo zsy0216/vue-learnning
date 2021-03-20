@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>47-Vuex-修改共享数据</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <son1 @parent-change="change"></son1>
+    <hr>
+    <son2 :parent-num="num"></son2>
+  </div>
+</template>
+
+<template id="son1">
+  <div>
+    <!-- 需求：在第一个子组件中添加两个按钮和一个输入框，通过按钮控制输入框数据增减 -->
+    <button @click="add"> +1</button>
+    <input type="text" :value="this.$store.state.count" disabled>
+    <button @click="sub"> -1</button>
+  </div>
+</template>
+<template id="son2">
+  <div>
+    <!-- 需求：在第二个子组件展示第一个子组件中的数据 -->
+    <button @click="add"> +1</button>
+    <input type="text" :value="this.$store.state.count" disabled>
+    <button @click="sub"> -1</button>
+  </div>
+</template>
+</body>
+<script>
+  // Vuex 对象
+  const store = new Vuex.Store({
+    // state 用于保存共享数据
+    state: {
+      count: 0
+    },
+    // mutations 用于声明修改共享数据的方法
+    mutations: {
+      increment(state) {
+        state.count++
+      },
+      decrement(state) {
+        state.count--
+      }
+    }
+  })
+
+  Vue.component("father", {
+    template: "#father",
+    store: store,
+    components: {
+      'son1': {
+        template: '#son1',
+        methods: {
+          add() {
+            // 在 Vuex 中不建议直接修改共享数据
+            // this.$store.state.count++
+            this.$store.commit("increment")
+          },
+          sub() {
+            // this.$store.state.count--
+            this.$store.commit("decrement")
+          }
+        }
+      },
+      'son2': {
+        template: '#son2',
+        methods: {
+          add() {
+            // 在 Vuex 中不建议直接修改共享数据
+            // this.$store.state.count++
+            this.$store.commit("increment")
+          },
+          sub() {
+            // this.$store.state.count--
+            this.$store.commit("decrement")
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+注意点：
+1. 在 Vuex 中不建议直接修改共享数据，多个组件都修改共享数据，当出现错误时，不利于排错
+
+2. 如何修改？ 使用 mutations
+mutations 中定义的方法，系统会自动传递一个 state 参数，可以通过这个参数来获取共享数据从而进行修改
+
+3. 如何调用 mutations 中的方法
+this.$store.commit("decrement")
+
+const store = new Vuex.Store({
+    // state 用于保存共享数据
+    state: {
+      count: 0
+    },
+    // mutations 用于声明修改共享数据的方法
+    mutations: {
+      increment(state) {
+        state.count++
+      },
+      decrement(state) {
+        state.count--
+      }
+    }
+  })
+-->
