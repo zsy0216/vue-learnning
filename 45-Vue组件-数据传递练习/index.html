@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>45-Vue组件-数据传递练习</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    <son1 @parent-change="change"></son1>
+    <hr>
+    <son2 :parent-num="num"></son2>
+  </div>
+</template>
+
+<template id="son1">
+  <div>
+    <!-- 需求：在第一个子组件中添加两个按钮和一个输入框，通过按钮控制输入框数据增减 -->
+    <button @click="add"> +1</button>
+    <input type="text" :value="count">
+    <button @click="sub"> -1</button>
+  </div>
+</template>
+<template id="son2">
+  <div>
+    <!-- 需求：在第二个子组件展示第一个子组件中的数据 -->
+    <input type="text" :value="parentNum" disabled>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component("father", {
+    template: "#father",
+    data() {
+      return {
+        num: 0
+      }
+    },
+    methods: {
+      change(newCount) {
+        this.num = newCount
+      }
+    },
+    components: {
+      'son1': {
+        template: '#son1',
+        data() {
+          return {
+            count: 0
+          }
+        },
+        methods: {
+          add() {
+            this.count++
+            this.$emit('parent-change', this.count)
+          },
+          sub() {
+            this.count--
+            this.$emit('parent-change', this.count)
+          }
+        }
+      },
+      'son2': {
+        template: '#son2',
+        props: ['parentNum']
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1.
+- 子组件要使用父组件的数据，必须通过父组件传递
+- 子组件要使用祖组件的数据，必须一层一层的传递
+- 兄弟组件之间要互相使用数据，必须借助父组件传递
+
+2. 如何实现子组件数据和父组件数据同步
+- 父组件给子组件传递一个方法
+- 子组件修改数据，调用父组件传递的方法，将修改的数据作为参数传递给父组件
+- 在父组件方法中利用参数保存最新的数据
+
+3. 父组件再传递第一个子组件的数据给第二个子组件
+
+4. 这种借助父组件传递数据的方式，非常复杂，不推荐
+为了解决多层组件或兄弟组件之间数据传递问题，可以使用Vuex解决
+-->
