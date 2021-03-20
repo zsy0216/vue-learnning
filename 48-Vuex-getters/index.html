@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>48-Vuex-getters</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+
+<template id="father">
+  <div>
+    计算属性：转大写
+    <p>{{format}}</p>
+    <p>{{format}}</p>
+    <p>{{format}}</p>
+    <hr>
+    getters：转大写
+    <p>{{this.$store.getters.format}}</p>
+    <p>{{this.$store.getters.format}}</p>
+    <p>{{this.$store.getters.format}}</p>
+  </div>
+</template>
+</body>
+<script>
+  // Vuex 对象
+  const store = new Vuex.Store({
+    // state 用于保存共享数据
+    state: {
+      msg: 'this is father\'s msg'
+    },
+    // mutations 用于声明修改共享数据的方法
+    mutations: {},
+    getters: {
+      format(state) {
+        console.log("getters 方法执行")
+        return state.msg.toUpperCase()
+      }
+    }
+  })
+
+  Vue.component("father", {
+    template: "#father",
+    store: store,
+    data() {
+      return {
+        msg: 'this is father\'s msg'
+      }
+    },
+    computed: {
+      format() {
+        console.log("计算属性方法执行")
+        return this.msg.toUpperCase()
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. Vuex 中的 getters 是什么？
+getters 属性和组件中的计算属性一样，会将数据缓存起来，只有数据发生变化才会重新计算
+
+2. getter 中的属性跟 mutations 中的方法一样，会接收一个 state 参数，state 保存了共享数据
+
+-->
