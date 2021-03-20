@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>46-Vue组件-Vuex</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <grandfather></grandfather>
+</div>
+
+<template id="grandfather">
+  <div>
+    <p>祖组件 - {{ this.$store.state.msg }}</p>
+    <father></father>
+  </div>
+</template>
+<template id="father">
+  <div>
+    <p>父组件 - {{ this.$store.state.msg }}</p>
+    <son></son>
+  </div>
+</template>
+
+<template id="son">
+  <div>
+    <p>子组件 - {{ this.$store.state.msg }}</p>
+  </div>
+</template>
+</body>
+<script>
+  // Vuex 对象
+  const store = new Vuex.Store({
+    // state 相当于组件中的 data 用于保存共享数据
+    state: {
+      msg: 'this is vuex msg.'
+    }
+  })
+
+  Vue.component("grandfather", {
+    template: "#grandfather",
+    store: store,
+    components: {
+      'father': {
+        template: '#father',
+        components: {
+          'son': {
+            template: '#son',
+          }
+        }
+      }
+    }
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm1 = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data() {
+      return {}
+    },
+    methods: {}
+  })
+</script>
+</html>
+<!--
+1. 什么是Vuex
+Vuex 是 Vue 配套的公共数据管理工具，我们可以将共享的数据保存到 Vuex 中
+方便整个程序中的任何组件都可以获取和修改 Vuex 中保存的公共数据
+
+2. 在祖组件中添加 store 保存 Vuex 对象，则祖组件、父组件和子组件都可以使用共享数据了
+
+3. 使用方式： this.$store.state.msg
+-->
