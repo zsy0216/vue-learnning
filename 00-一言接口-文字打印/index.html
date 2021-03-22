@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>00-一言接口-文字打印</title>
+  <script src="js/jquery-3.1.1.min.js"></script>
+  <style type="text/css">
+      .container {
+          float: left;
+          display: inline-block;
+          position: relative;
+      }
+
+      @keyframes blink-caret {
+          50% {
+              background-color: transparent;
+          }
+      }
+
+      span {
+          animation: blink-caret 1s step-end infinite;
+          width: 3px;
+          height: 20px;
+          background-color: #000;
+          float: left;
+          position: absolute;
+          right: -10px;
+      }
+  </style>
+</head>
+<body>
+<div id="print">
+  <div class="container"></div>
+</div>
+<script type="text/javascript">
+  var s = '';
+  var con = $('.container');
+  var index = 0;
+  var length = 0;
+  var tId = null;
+
+  function start() {
+    con.text('');
+    con.append('<span></span>');
+    tId = setInterval(function () {
+      con.append(s.charAt(index));
+      if (index++ === length) {
+        $.ajax({
+          url: "https://v1.hitokoto.cn/?c=i",
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            s = data.hitokoto
+            length = s.length + 5
+            console.log(s)
+          }
+        });
+        clearInterval(tId);
+        index = 0;
+        start()
+      }
+    }, 300);
+  }
+  start();
+</script>
+</body>
+</html>
