@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>51-VueRouter-嵌套路由</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <style>
+      .z-active {
+          background: red;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <router-link to="/one" tag="button">切换到第一个界面</router-link>
+  <router-link to="/two" tag="button">切换到第二个界面</router-link>
+
+  <!-- 路由出口 -->
+  <router-view></router-view>
+</div>
+<template id="one">
+  <div class="onepage">
+    <p>第一个界面</p>
+    <router-link to="/one/sub1" tag="button">切换到第一个子界面</router-link>
+    <router-link to="/one/sub2" tag="button">切换到第二个子界面</router-link>
+
+    <router-view></router-view>
+  </div>
+</template>
+<template id="onesub1">
+  <div class="onesub1">
+    <p>第一个子界面</p>
+  </div>
+</template>
+<template id="onesub2">
+  <div class="onesub2">
+    <p>第二个子界面</p>
+  </div>
+</template>
+<template id="two">
+  <div class="twopage">
+    <p>第二个界面</p>
+  </div>
+</template>
+</body>
+<script>
+  // 定义组件
+  const onesub1 = {
+    template: '#onesub1'
+  }
+  const onesub2 = {
+    template: '#onesub2'
+  }
+  const one = {
+    template: '#one',
+    components: {
+      onesub1, onesub2
+    }
+  }
+  const two = {
+    template: '#two'
+  }
+
+  // 定义路由规则
+  const routes = [
+    {
+      path: '/one', component: one,
+      children: [
+        {path: 'sub1', component: onesub1},
+        {path: 'sub2', component: onesub2}
+      ]
+    },
+    {path: '/two', component: two}
+  ]
+  // 根据路由规则创建路由对象
+  const router = new VueRouter({
+    routes,
+    linkActiveClass: 'z-active'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    components: {
+      one, two
+    },
+    // 将路由router对象绑定到Vue实例
+    router
+  })
+</script>
+</html>
+<!--
+1. 什么是嵌套路由？
+嵌套路由也称之为子路由，就是在被切换的组件中又切换其他子组件
+例如：在one界面中又有两个按钮，通过这两个按钮进一步切换one中的内容
+
+// 定义路由规则
+const routes = [
+  {
+    path: '/one', component: one,
+    // 嵌套路由
+    children: [
+      {path: 'sub1', component: onesub1},
+      {path: 'sub2', component: onesub2}
+    ]
+  },
+  {path: '/two', component: two}
+]
+// 根据路由规则创建路由对象
+const router = new VueRouter({
+  routes,
+  linkActiveClass: 'z-active'
+})
+-->
