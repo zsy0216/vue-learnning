@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>52-VueRouter-命名视图</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <style>
+      .z-active {
+          background: red;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- 路由出口 -->
+  <router-view name="name1"></router-view>
+  <router-view name="name2"></router-view>
+</div>
+<template id="one">
+  <div class="onepage">
+    <p>第一个界面</p>
+  </div>
+</template>
+<template id="two">
+  <div class="twopage">
+    <p>第二个界面</p>
+  </div>
+</template>
+</body>
+<script>
+  // 定义组件
+  const onesub1 = {
+    template: '#onesub1'
+  }
+  const onesub2 = {
+    template: '#onesub2'
+  }
+  const one = {
+    template: '#one',
+    components: {
+      onesub1, onesub2
+    }
+  }
+  const two = {
+    template: '#two'
+  }
+
+  // 定义路由规则
+  const routes = [
+    {
+      path: '/',
+      components: {
+        name1: one,
+        name2: two
+      },
+    },
+  ]
+  // 根据路由规则创建路由对象
+  const router = new VueRouter({
+    routes,
+    linkActiveClass: 'z-active'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    components: {
+      one, two
+    },
+    // 将路由router对象绑定到Vue实例
+    router
+  })
+</script>
+</html>
+<!--
+1. 什么是命名视图？
+命名视图和具名插槽很像，都是让不同的出口显示不同的内容，命名视图就是当路由地址被匹配的时候同时指定多个出口
+并且每个出口显示的内容不同
+
+2. 和匿名插槽一样，如果指定了多个 router-view, 那么当我们匹配路由地址时，每个 router-view 都会显示指定组件的内容
+如果想每个  router-view  显示不同的内容，就需要使用命名视图
+// 定义路由规则
+const routes = [
+  {
+    path: '/',
+    components: {
+      name1: one,
+      name2: two
+    },
+  },
+]
+
+<router-view name="name1"></router-view>
+<router-view name="name2"></router-view>
+-->
