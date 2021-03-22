@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>54-Vue-生命周期方法</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <button @click="change">切换</button>
+  <one v-if="isShow"></one>
+  <p>{{msg}}</p>
+  <!-- v-if 实现切换是通过删除和重新创建来完成的 -->
+  <img src="images/lifecycle.png" alt="生命周期图示" width="50%">
+</div>
+<template id="one">
+  <p>测试组件</p>
+</template>
+</body>
+<script>
+  const one = {
+    template: '#one',
+    beforeDestroy() {
+      console.log("beforeDestroy")
+    },
+    destroyed() {
+      console.log("destroyed")
+    }
+  }
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      msg: "this is test msg.",
+      isShow: true
+    },
+    methods: {
+      change() {
+        this.isShow = !this.isShow
+      }
+    },
+    components: {
+      one
+    },
+    beforeCreate() {
+      console.log("beforeCreate")
+    },
+    created() {
+      /* 这里是最早能访问到 Vue 实例中的 data 和 methods 的生命周期方法 */
+      console.log("created")
+    },
+    beforeMount() {
+      console.log("beforeMount")
+    },
+    mounted() {
+      console.log("mounted")
+    },
+    beforeUpdate() {
+      /* 这里是最后能访问到 Vue 实例中的 data 和 methods 的生命周期方法 */
+      console.log("beforeUpdate")
+    },
+    updated() {
+      console.log("updated")
+    }
+  })
+</script>
+</html>
+<!--
+1. 什么是生命周期方法?
+和 webpack 的生命周期方法一样，都是在从生到死的特定阶段调用的方法
+ps: 生命周期钩子 = 生命周期函数 = 生命周期方法
+
+2. Vue 生命周期方法分类
+- 创建期间的生命周期方法：
+  beforeCreate(): 刚创建Vue实例，此时还没有初始化data和methods
+  created(): 此时已经初始化data和methods
+  beforeMount(): 此时已经完成了模板的编译，还没有挂载生成的元素到界面
+  mounted(): 此时已经完成了模板的渲染，已经可以拿到页面上渲染之后的内容了
+
+- 运行期间的生命周期方法
+  beforeUpdate(): 此时表示实例中的数据被修改了，但此时界面上还没有同步更新
+  updated(): 此时数据被修改且界面内容也已经完成了更新
+
+- 销毁期间的生命周期方法
+  beforeDestroy(): 此时表示组件即将被销毁，这里仍能访问实例中的data和methods
+  destroyed(): 此时表示组件已经完全销毁，组件所有内容均不可访问
+
+-->
