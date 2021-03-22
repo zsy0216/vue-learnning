@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>55-Vue特殊特性</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <button @click="fn1">通过原生方法获取DOM</button>
+  <button @click="fn2">通过ref获取DOM</button>
+  <p ref="myP">这是p元素标签渲染的内容</p>
+  <one ref="myOne" id="myone"></one>
+</div>
+<template id="one">
+  <div>
+    <p>这里是组件渲染的内容</p>
+  </div>
+</template>
+</body>
+<script>
+  Vue.component('one', {template: '#one'})
+
+  /* 1. 创建 vue 实例对象 */
+  let vue = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {},
+    methods: {
+      fn1() {
+        /*
+        * 通过原生方法获取 DOM 元素
+        * 这里获取的都是原生的 DOM 元素对象
+        * 不推荐
+        * */
+        console.log(document.querySelector("p"));
+        console.log(document.querySelector("#myone"));
+      },
+      fn2() {
+        /*
+        * 通过ref方式获取DOM
+        * 使用ref可以获取组件对象
+        * */
+        console.log(this.$refs);
+        console.log(this.$refs.myP);
+        console.log(this.$refs.myOne);
+      }
+    }
+  })
+</script>
+</html>
+<!--
+1. Vue 特殊特性
+Vue 特点：数据驱动界面更新，无需操作DOM来更新界面，也就是说Vue不推荐我们直接操作DOM
+但是在开发中有时候我们确实需要拿到DOM后来操作DOM；
+
+那么如果不推荐使用原生的语法操作 DOM，我们应该如何获取 DOM？
+在 Vue 中如果想要拿到 DOM 元素我们可以通过 ref 来获取
+
+2. ref 使用
+- 在需要获取的元素上添加 ref 属性，例如 <p ref="myp">段落</p>
+- 在使用的地方通过 this.$ref.xxx 获取，例如 this.$ref.myp
+
+3. ref 特点
+ref 添加到DOM元素上，拿到的就是 DOM 元素
+ref 添加到组件上，拿到的就是组件
+-->
