@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>53-VueRouter-watch属性</title>
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <style>
+      .z-active {
+          background: red;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <p>使用监听键盘抬起方法实现加法</p>
+  <input type="text" v-model="num1" @keyup="change1">
+  <span> + </span>
+  <input type="text" v-model="num2" @keyup="change2">
+  <span> = </span>
+  <input type="text" v-model="result" disabled>
+
+  <hr>
+  <p>使用watch属性实现加法</p>
+  <input type="text" v-model="num3">
+  <span> + </span>
+  <input type="text" v-model="num4">
+  <span> = </span>
+  <input type="text" v-model="result2" disabled>
+
+  <hr>
+  <p>使用watch属性实现监听路由变化</p>
+  <router-link to="/one" tag="button">切换到第一个界面</router-link>
+  <router-link to="/two" tag="button">切换到第二个界面</router-link>
+
+  <!-- 路由出口 -->
+  <router-view></router-view>
+</div>
+<template id="one">
+  <div class="onepage">
+    <p>第一个界面</p>
+  </div>
+</template>
+<template id="two">
+  <div class="twopage">
+    <p>第二个界面</p>
+  </div>
+</template>
+</body>
+<script>
+  // 定义组件
+  const one = {
+    template: '#one'
+  }
+  const two = {
+    template: '#two'
+  }
+
+  // 定义路由规则
+  const routes = [
+    // 通过重定向设置默认导航路由
+    // {path: '/', redirect:'/one'},
+    {path: '/one', component: one},
+    {path: '/two', component: two}
+  ]
+  // 根据路由规则创建路由对象
+  const router = new VueRouter({
+    routes,
+    linkActiveClass: 'z-active'
+  })
+
+  /* 1. 创建 vue 实例对象 */
+  let vm = new Vue({
+    // 2. 声明vue的实例对象控制页面的哪个区域
+    el: '#app',
+    // 3. 声明vue控制区域可以使用的数据
+    data: {
+      num1: 0,
+      num2: 0,
+      result: 0,
+      num3: 0,
+      num4: 0,
+      result2: 0,
+    },
+    watch: {
+      num3(newValue, oldValue) {
+        this.result2 = parseInt(this.num3) + parseInt(this.num4)
+      },
+      num4(newValue, oldValue) {
+        this.result2 = parseInt(this.num3) + parseInt(this.num4)
+      },
+
+      "$route.path"(newValue, oldValue) {
+        console.log(newValue, oldValue)
+      }
+    },
+    methods: {
+      change1() {
+        this.result = parseInt(this.num1) + parseInt(this.num2)
+      },
+      change2() {
+        this.result = parseInt(this.num1) + parseInt(this.num2)
+      }
+    },
+    components: {
+      one, two
+    },
+    // 将路由router对象绑定到Vue实例
+    router
+  })
+</script>
+</html>
+<!--
+1. 什么是watch属性
+ watch 属性是专门用于监听数据变化的，只要数据发生了变化，就会自动调用对应数据的回调方法
+
+2. watch 监听路由变化
+watch 属性不仅仅能够监听数据的变化，还能够监听路由地址的变化
+在开发中我们可以通过watch来判断当前界面是从哪个界面跳转过来的
+
+3. 路由地址获取： $route.path
+-->
