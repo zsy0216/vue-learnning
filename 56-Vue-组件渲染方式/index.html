@@ -26,9 +26,11 @@
     el: '#app',
     // 3. 声明vue控制区域可以使用的数据
     data: {},
-    render(createElement) {
+    /*render(createElement) {
       return createElement("one")
-    }
+    }*/
+    // render: createElement => createElement("one")
+    render: h => h("one")
   })
 </script>
 </html>
@@ -40,4 +42,17 @@
 2. 两种渲染方法的区别
 - 当作标签来渲染，不会覆盖 Vue 实例控制区域
 - 通过 render 渲染，会覆盖 Vue 实例控制区域
+
+3. render 使用箭头函数简写过程
+形式一：
+render(createElement) {
+  return createElement("one")
+}
+
+形式二：
+render: createElement => createElement("one")
+
+形式三：
+render: h => h("one")
+
 -->
